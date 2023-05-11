@@ -1,4 +1,4 @@
-const baseURL = 'https://django-server-production-6f83.up.railway.app/tarefas/'
+const baseURL = 'https://django-server-production-61b8.up.railway.app/task_api/'
 
 
 let tarefas = []
