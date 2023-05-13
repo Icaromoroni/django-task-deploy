@@ -67,11 +67,11 @@
 
     <label for="situacao">Situação:</label>
     <select id="situacao" name="situacao">
-      <option value="nova">Nova</option>
-      <option value="em andamento">Em andamento</option>
-      <option value="pensente">Pendente</option>
-      <option value="cancelada">Cancelada</option>
-      <option value="resolvida">Concluído</option>
+      <option value="Nova">Nova</option>
+      <option value="Em andamento">Em andamento</option>
+      <option value="Pensente">Pendente</option>
+      <option value="Cancelada">Cancelada</option>
+      <option value="Resolvida">Concluído</option>
     </select>
 
     <label for="nivel">Nível:</label>
@@ -93,10 +93,14 @@
     <input type="button" value="Cancelar" onclick="window.location.href='index.html';">
   </form>
   <script>
+
+    //AINDA PRECISA SER CONCERTADA PORQUE NÃO DA PRA ATUALIZAR A TAREFA POR CAUSA DO EVENTO SUBMIT ABAIXO,
+    //POIS NÃO PERMITE ATUALIZAR COM A ROTA COM ID, MAS ESTA BEM PERTO DE DAR CERTO.
+
     const urlBase = "http://localhost:8000/tarefas/"
 
     editando = false
-    
+
     const formulario = document.getElementById("meuFormulario");
     formulario.addEventListener("submit", enviarFormulario);
 
@@ -124,11 +128,11 @@
         .then(data => {
           console.log(data.situacao)
           // preencher os campos do formulário com os dados da tarefa
-          document.getElementById("descricao").value = data.descricao;
-          document.getElementById("responsavel").value = data.responsavel;
-          document.getElementById("situacao").value = data.situacao;
-          document.getElementById("nivel").value = data.nivel;
-          document.getElementById("prioridade").value = data.prioridade;
+          document.querySelector("#descricao").value = data.descricao;
+          document.querySelector("#responsavel").value = data.responsavel;
+          document.querySelector("#situacao").value = data.situacao;
+          document.querySelector("#nivel").value = data.nivel;
+          document.querySelector("#prioridade").value = data.prioridade;
         });
 
         formulario.addEventListener('submit', (event) => {
