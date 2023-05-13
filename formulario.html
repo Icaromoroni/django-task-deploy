@@ -59,6 +59,10 @@
 </head>
 <body>
   <form id="meuFormulario">
+    <h2>Cadastre sua Tarefa</h2>
+    <p id="msg">
+
+    </p>
     <label for="descricao">Descrição:</label>
     <input type="text" id="descricao" name="descricao" required>
 
@@ -69,7 +73,7 @@
     <select id="situacao" name="situacao">
       <option value="Nova">Nova</option>
       <option value="Em andamento">Em andamento</option>
-      <option value="Pensente">Pendente</option>
+      <option value="Pendente">Pendente</option>
       <option value="Cancelada">Cancelada</option>
       <option value="Resolvida">Concluído</option>
     </select>
@@ -94,33 +98,18 @@
   </form>
   <script>
 
-    //AINDA PRECISA SER CONCERTADA PORQUE NÃO DA PRA ATUALIZAR A TAREFA POR CAUSA DO EVENTO SUBMIT ABAIXO,
-    //POIS NÃO PERMITE ATUALIZAR COM A ROTA COM ID, MAS ESTA BEM PERTO DE DAR CERTO.
-
     const urlBase = "http://localhost:8000/tarefas/"
+    const urlParams = new URLSearchParams(window.location.search);
 
     editando = false
 
-    const formulario = document.getElementById("meuFormulario");
-    formulario.addEventListener("submit", enviarFormulario);
-
-    function enviarFormulario(event) {
-      event.preventDefault();
-
-      const dados = new FormData(formulario);
-
-      fetch( urlBase, {
-        method: "POST",
-        body: dados
-      })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
-      window.location.href = 'index.html';
+    if (urlParams.size === 1){
+      editando = true
     }
 
-    function updateTask(){
-      const urlParams = new URLSearchParams(window.location.search);
+    const formulario = document.getElementById("meuFormulario");
+
+    if (editando){
       const id = urlParams.get('id');
 
       fetch( urlBase + id)
@@ -147,11 +136,38 @@
             .then(response => response.json())
             .then(data => {
               // exibir mensagem de sucesso e redirecionar para a página de lista de tarefas
+              // const msg = document.getElementById('msg');
+              // msg.innerText = 'Tarefa atualizada!';
+              formulario.innerHTML = '';
+              formulario.innerHTML = 'Tarefa atualizada!'
+              formulario.reset();
+              setTimeout(function() {
+                // código que será executado após 2 segundos
+                window.location.href = 'index.html';
+              }, 2000);
+              
+
+
             });
         });
-    }
+  } else {
+      formulario.addEventListener("submit", enviarFormulario);
 
-    updateTask()
+      function enviarFormulario(event) {
+        event.preventDefault();
+
+        const dados = new FormData(formulario);
+
+        fetch( urlBase, {
+          method: "POST",
+          body: dados
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+        window.location.href = 'index.html';
+      }
+  }
 
   </script>
 </body>
