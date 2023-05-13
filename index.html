@@ -23,7 +23,7 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 5px;
-  width: 150px;
+  width: 100px;
   font-size: 16px;
   color: #ccc;
 }
@@ -42,11 +42,6 @@
   background-color: #202c3b;
   border-bottom: 1px solid #ccc;
 }
-/* 
-.navbar {
-  background-color: #fff;
-  border-bottom: 1px solid #ccc;
-} */
 
 .navbar-brand img {
   max-width: 50px;
@@ -83,15 +78,15 @@ a {
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
+  <nav class="navbar navbar-expand-lg navbar-light">
 		<a class="navbar-brand" href="#"><img src="#" alt="Logo"></a>
 		<form class="form-inline my-2 my-lg-0 ml-auto" id="search-form">
-            <select name="search-select" id="search-select">
-                <option selected>Menu de pesquisa</option>
-                <option value="situacao">Situação</option>
-                <option value="prioridade">Prioridade</option>
-                <option value="nivel">Nivel</option>
-            </select>
+      <select name="search-select" id="search-select">
+          <option selected>Filtro</option>
+          <option value="situacao">Situação</option>
+          <option value="prioridade">Prioridade</option>
+          <option value="nivel">Nivel</option>
+      </select>
 			<input class="form-control mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar" id="search-input">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
 		</form>
@@ -127,123 +122,120 @@ a {
 			</li>
 		</ul>
 	</div>
-    <script>
-        const listContainer = document.querySelector('#list-container');
+  <script>
+  const listContainer = document.querySelector('#list-container');
 
-    function renderTasks() {
-        // Faz uma requisição GET para a API
-        fetch('http://127.0.0.1:8000/tarefas/')
-            .then(response => response.json())
-            .then(data => {
-            // Limpa a lista atual de tarefas
-            listContainer.innerHTML = '';
+  function renderTasks() {
+    // Faz uma requisição GET para a API
+    fetch('http://127.0.0.1:8000/tarefas/')
+        .then(response => response.json())
+        .then(data => {
+          
+          //função para listar tarefas
+          listTask(data)        
+        });
+    }
 
-            // Adiciona cada tarefa na lista
-            data.forEach(task => {
-                const listItem = document.createElement('li');
-                listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+    // Atualiza a lista de tarefas a cada 5 segundos
+    // setInterval(renderTasks, 5000);
 
-                const divItem = document.createElement('div');
+    const searchForm = document.querySelector('#search-form');
+    const searchInput = document.querySelector('#search-input');
+    const searchSelect = document.querySelector('#search-select');
 
-                const taskName = document.createElement('a');
-                taskName.href = '#';
-                taskName.classList.add('descricao')
-                taskName.innerText = task.descricao;
+    searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-                const editButton = document.createElement('a');
-                editButton.href = '#'
-                editButton.classList.add('mx-3');                
-                editButton.innerHTML = '<i class="fas fa-edit"></i>';
+    // Obter a opção selecionada do campo de seleção
+    const searchOption = searchSelect.value;
 
-                const statusButton = document.createElement('a');
-                statusButton.href = '#'
-                statusButton.classList.add('mx-3');
-                statusButton.innerHTML = '<i class="fas fa-check"></i>';
+    // Obter o valor digitado no campo de pesquisa
+    const searchTerm = searchInput.value;
 
-                const deleteButton = document.createElement('a');
-                deleteButton.href = '#'
-                deleteButton.classList.add('mx-3');
-                deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+    // Montar a URL da API com base na opção selecionada
+    let apiUrl = 'http://127.0.0.1:8000/tarefas/';
+    apiUrl = `http://127.0.0.1:8000/search/?${searchOption}=${searchTerm}`;
+    if (searchOption === 'situacao') {
+        apiUrl
+    } else if (searchOption === 'nivel') {
+        apiUrl
+    } else if (searchOption === 'prioridade') {
+        apiUrl
+    }
 
-                
-                divItem.appendChild(editButton);
-                divItem.appendChild(statusButton);
-                divItem.appendChild(deleteButton);
+    // Fazer uma requisição GET para a API com a URL montada
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // função para listar todas tarefas filtradas
+          listTask(data)
+          })
+        .catch(error => {
+          // Criar mensagem de erro
+          const msg = document.createElement('p');
+          msg.innerHTML = `Tarefa não existe.`;
+          
+          // Adicionar mensagem de erro ao DOM
+          const container = document.querySelector('#list-container');
+          container.appendChild(msg);
 
-                listItem.appendChild(taskName);
-                listItem.appendChild(divItem)
+          // Registrar erro no console
+          console.error(error);
+        });
+        
+        });
 
-                listContainer.appendChild(listItem);
-            });
-            });
-        }
+    function listTask(data){
+      // Limpar a lista atual de tarefas
+      listContainer.innerHTML = '';
+      // Adiciona cada tarefa na lista
+      data.forEach(task => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
 
-        // Atualiza a lista de tarefas a cada 5 segundos
-        setInterval(renderTasks, 5000);
+            const divItem = document.createElement('div');
 
-        const searchForm = document.querySelector('#search-form');
-        const searchInput = document.querySelector('#search-input');
-        const searchSelect = document.querySelector('#search-select');
+            const taskName = document.createElement('a');
+            taskName.href = '#';
+            taskName.classList.add('descricao')
+            taskName.innerText = task.descricao;
 
-        searchForm.addEventListener('submit', (event) => {
-        event.preventDefault();
+            const editButton = document.createElement('a');
+            editButton.href = '#'
+            editButton.classList.add('mx-3');                
+            editButton.innerHTML = '<i class="fas fa-edit"></i>';
+            editButton.onclick = (event) => {
+              editarTarefa(task.id)
+            }
 
-        // Obter a opção selecionada do campo de seleção
-        const searchOption = searchSelect.value;
+            const statusButton = document.createElement('a');
+            statusButton.href = '#'
+            statusButton.classList.add('mx-3');
+            statusButton.innerHTML = '<i class="fas fa-check"></i>';
 
-        // Obter o valor digitado no campo de pesquisa
-        const searchTerm = searchInput.value;
+            const deleteButton = document.createElement('a');
+            deleteButton.href = '#'
+            deleteButton.classList.add('mx-3');
+            deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
 
-        // Montar a URL da API com base na opção selecionada
-        let apiUrl = 'http://127.0.0.1:8000/tarefas/';
-        apiUrl = `http://127.0.0.1:8000/search/?${searchOption}=${searchTerm}`;
-        if (searchOption === 'situacao') {
-            apiUrl
-        } else if (searchOption === 'nivel') {
-            apiUrl
-        } else if (searchOption === 'prioridade') {
-            apiUrl
             
-        }
+            divItem.appendChild(editButton);
+            divItem.appendChild(statusButton);
+            divItem.appendChild(deleteButton);
 
-        // Fazer uma requisição GET para a API com a URL montada
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-            // Limpar a lista atual de tarefas
-            listContainer.innerHTML = '';
+            listItem.appendChild(taskName);
+            listItem.appendChild(divItem)
 
-            // Adicionar cada tarefa na lista
-            data.forEach(task => {
-                const listItem = document.createElement('li');
-                listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+            listContainer.appendChild(listItem);
+        });
+    }
+    function editarTarefa(id) {
+      window.location.href = 'formulario.html?id=' + id;
+    }
 
-                const taskName = document.createElement('span');
-                taskName.innerText = task.descricao;
-
-                const editButton = document.createElement('button');
-                editButton.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'mx-3');
-                editButton.innerHTML = '<i class="fas fa-edit"></i>';
-
-                const statusButton = document.createElement('button');
-                statusButton.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'mx-3');
-                statusButton.innerHTML = '<i class="fas fa-check"></i>';
-
-                const deleteButton = document.createElement('button');
-                deleteButton.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'mx-3');
-                deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-
-                listItem.appendChild(taskName);
-                listItem.appendChild(editButton);
-                listItem.appendChild(statusButton);
-                listItem.appendChild(deleteButton);
-
-                listContainer.appendChild(listItem);
-            });
-            });
-            });
+    renderTasks()
 
 
-    </script>
+  </script>
 </body>
 </html>
