@@ -60,14 +60,14 @@
 <body>
   <form id="meuFormulario">
     <label for="descricao">Descrição:</label>
-    <input type="text" id="descricao" name="descricao">
+    <input type="text" id="descricao" name="descricao" required>
 
     <label for="responsavel">Responsável:</label>
-    <input type="text" id="responsavel" name="responsavel">
+    <input type="text" id="responsavel" name="responsavel" required>
 
     <label for="situacao">Situação:</label>
     <select id="situacao" name="situacao">
-      <option value="nova">Aberto</option>
+      <option value="nova">Nova</option>
       <option value="em andamento">Em andamento</option>
       <option value="pensente">Pendente</option>
       <option value="cancelada">Cancelada</option>
@@ -90,9 +90,13 @@
     </select>
 
     <input type="submit" value="Submit">
-    <input type="button" value="Cancelar" onclick="location.href='lista.html';">
+    <input type="button" value="Cancelar" onclick="window.location.href='index.html';">
   </form>
   <script>
+    const urlBase = "http://localhost:8000/tarefas/"
+
+    editando = false
+    
     const formulario = document.getElementById("meuFormulario");
     formulario.addEventListener("submit", enviarFormulario);
 
@@ -101,14 +105,50 @@
 
       const dados = new FormData(formulario);
 
-      fetch("http://localhost:8000/tarefas/", {
+      fetch( urlBase, {
         method: "POST",
         body: dados
       })
       .then(response => response.json())
       .then(data => console.log(data))
       .catch(error => console.error(error));
+      window.location.href = 'index.html';
     }
+
+    function updateTask(){
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+
+      fetch( urlBase + id)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.situacao)
+          // preencher os campos do formulário com os dados da tarefa
+          document.getElementById("descricao").value = data.descricao;
+          document.getElementById("responsavel").value = data.responsavel;
+          document.getElementById("situacao").value = data.situacao;
+          document.getElementById("nivel").value = data.nivel;
+          document.getElementById("prioridade").value = data.prioridade;
+        });
+
+        formulario.addEventListener('submit', (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(formulario);
+
+          fetch(urlBase + id, {
+            method: 'PUT',
+            body: formData
+          })
+            .then(response => response.json())
+            .then(data => {
+              // exibir mensagem de sucesso e redirecionar para a página de lista de tarefas
+            });
+        });
+    }
+
+    updateTask()
+
   </script>
 </body>
 </html>
