@@ -4,65 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #1c2331, #3c466b);
-    }
-
-    form {
-      width: 60%;
-      max-width: 500px;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #f5f5f5;
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    input[type="text"],
-    select {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-
-    input[type="submit"],
-    input[type="button"] {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-right: 10px;
-    }
-
-    input[type="submit"]:hover,
-    input[type="button"]:hover {
-      background-color: #45a049;
-    }
-  </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Formulario</title>
+    <link rel="stylesheet" href="css/form.css">
+    <script defer src="js/form.js"></script>
 </head>
 <body>
   <form id="meuFormulario">
     <h2>Cadastre sua Tarefa</h2>
-    <p id="msg">
-
-    </p>
     <label for="descricao">Descrição:</label>
     <input type="text" id="descricao" name="descricao" required>
 
@@ -96,79 +45,5 @@
     <input type="submit" value="Submit">
     <input type="button" value="Cancelar" onclick="window.location.href='index.html';">
   </form>
-  <script>
-
-    const urlBase = "http://localhost:8000/tarefas/"
-    const urlParams = new URLSearchParams(window.location.search);
-
-    editando = false
-
-    if (urlParams.size === 1){
-      editando = true
-    }
-
-    const formulario = document.getElementById("meuFormulario");
-
-    if (editando){
-      const id = urlParams.get('id');
-
-      fetch( urlBase + id)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.situacao)
-          // preencher os campos do formulário com os dados da tarefa
-          document.querySelector("#descricao").value = data.descricao;
-          document.querySelector("#responsavel").value = data.responsavel;
-          document.querySelector("#situacao").value = data.situacao;
-          document.querySelector("#nivel").value = data.nivel;
-          document.querySelector("#prioridade").value = data.prioridade;
-        });
-
-        formulario.addEventListener('submit', (event) => {
-          event.preventDefault();
-
-          const formData = new FormData(formulario);
-
-          fetch(urlBase + id, {
-            method: 'PUT',
-            body: formData
-          })
-            .then(response => response.json())
-            .then(data => {
-              // exibir mensagem de sucesso e redirecionar para a página de lista de tarefas
-              // const msg = document.getElementById('msg');
-              // msg.innerText = 'Tarefa atualizada!';
-              formulario.innerHTML = '';
-              formulario.innerHTML = 'Tarefa atualizada!'
-              formulario.reset();
-              setTimeout(function() {
-                // código que será executado após 2 segundos
-                window.location.href = 'index.html';
-              }, 2000);
-              
-
-
-            });
-        });
-  } else {
-      formulario.addEventListener("submit", enviarFormulario);
-
-      function enviarFormulario(event) {
-        event.preventDefault();
-
-        const dados = new FormData(formulario);
-
-        fetch( urlBase, {
-          method: "POST",
-          body: dados
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
-        window.location.href = 'index.html';
-      }
-  }
-
-  </script>
 </body>
 </html>

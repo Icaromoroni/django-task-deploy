@@ -1,0 +1,64 @@
+body {
+    background: linear-gradient(to bottom, #1c2331, #2d3047);
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+#search-select {
+    appearance: none;
+    background-color: #202c3b;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100px;
+    font-size: 16px;
+    color: #ccc;
+}
+
+#search-select option {
+    font-size: 16px;
+    color: #ccc;
+}
+
+.container {
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.navbar {
+    background-color: #202c3b;
+    border-bottom: 1px solid #ccc;
+}
+
+.navbar-brand img {
+    max-width: 50px;
+}
+
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+}
+
+a {
+    color: #fff;
+}
+
+.list-group-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-outline-primary {
+    border-color: #fff;
+    color: #fff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #fff;
+    color: #1c2331;
+}
+
+.fa-edit, .fa-check, .fa-trash {
+    color: #fff;
+}
