@@ -1,4 +1,4 @@
-const urlBase = 'hhttps://api-task-ncpu.onrender.com/api/token/';
+const urlBase = 'https://api-task-ncpu.onrender.com/api/token/';
 const loginForm = document.getElementById('login-form');
 const container = document.getElementById('container')
 
