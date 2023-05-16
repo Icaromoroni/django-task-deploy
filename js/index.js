@@ -1,10 +1,15 @@
 const tarefasURL = 'http://127.0.0.1:8000/tarefas/'
 const searchURL = 'http://127.0.0.1:8000/search/'
 const listContainer = document.querySelector('#list-container');
+const accessToken = localStorage.getItem('access_token');
 
 function renderTasks() {
 // Faz uma requisição GET para a API
-fetch(tarefasURL)
+fetch(tarefasURL , {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  })
     .then(response => response.json())
     .then(data => {
     
@@ -40,7 +45,12 @@ if (searchOption === 'situacao') {
 }
 
 // Fazer uma requisição GET para a API com a URL montada
-fetch(result)
+fetch(result, {
+    headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }
+})
+
     .then(response => response.json())
     .then(data => {
     // função para listar todas tarefas filtradas
@@ -211,7 +221,8 @@ form.id = 'formSituacao'
         fetch(tarefasURL + task.id, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify(dados)
         }
@@ -223,7 +234,10 @@ form.id = 'formSituacao'
     )
 }
 function detalharTarefa(id) {
-    fetch(`${tarefasURL}${id}`)
+    fetch(`${tarefasURL}${id}`,{
+        headers:{
+            'Authorization': `Bearer ${accessToken}`}
+    })
       .then(response => response.json())
       .then(data => {
         const descricaoTarefa = document.createElement('main');
@@ -242,7 +256,9 @@ function detalharTarefa(id) {
 function deletar(id){
 
     fetch(tarefasURL + id, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers:{
+            'Authorization': `Bearer ${accessToken}`}
     })
     .then(response => {
         if (response.ok) {

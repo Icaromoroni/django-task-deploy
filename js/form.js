@@ -1,4 +1,4 @@
-
+const accessToken = localStorage.getItem('access_token');
 const urlBase = "http://localhost:8000/tarefas/"
 const urlParams = new URLSearchParams(window.location.search);
 
@@ -15,7 +15,9 @@ const formulario = document.getElementById("meuFormulario");
 if (editando){
   const id = urlParams.get('id');
 
-  fetch( urlBase + id)
+  fetch( urlBase + id,{
+    headers: {'Authorization': `Bearer ${accessToken}`}
+  })
     .then(response => response.json())
     .then(data => {
       // preencher os campos do formulário com os dados da tarefa
@@ -33,7 +35,9 @@ if (editando){
 
       fetch(urlBase + id, {
         method: 'PUT',
-        body: formData
+        body: formData,
+          headers: {'Authorization': `Bearer ${accessToken}`}
+        
       })
         .then(response => response.json())
         .then(data => {
@@ -71,7 +75,8 @@ if (editando){
 
     fetch( urlBase, {
       method: "POST",
-      body: dados
+      body: dados,
+      headers: {'Authorization': `Bearer ${accessToken}`}
     })
     .then(response => response.json())
     .catch(error => console.error(error));

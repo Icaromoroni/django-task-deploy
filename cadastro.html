@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <link rel="stylesheet" href="css/cadastro.css">
+    <script defer src="js/cad.js"></script>
+    <title>Cadastro de usuario</title>
+</head>
+  <body>
+    <div class="container">
+        <h1>Cadastro de Usuário</h1>
+        <form id="register-form">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fas fa-user"></i></div>
+              <input type="text" name="username" placeholder="Nome" required>
+            </div>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fas fa-envelope"></i></div>
+              <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fas fa-lock"></i></div>
+              <input type="password" name="password" placeholder="Senha" required>
+            </div>
+            <input type="submit" value="Cadastrar" class="btn btn-success">
+          </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  </body>
+</html>
