@@ -1,5 +1,5 @@
 const accessToken = localStorage.getItem('access_token');
-const urlBase = "http://localhost:8000/tarefas/"
+const urlBase = "https://api-task-ncpu.onrender.com/tarefas/"
 const urlParams = new URLSearchParams(window.location.search);
 
 let editando = false

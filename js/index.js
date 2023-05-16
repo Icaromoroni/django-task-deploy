@@ -1,9 +1,7 @@
-const tarefasURL = 'http://127.0.0.1:8000/tarefas/'
-const searchURL = 'http://127.0.0.1:8000/search/'
+const tarefasURL = 'https://api-task-ncpu.onrender.com/tarefas/'
+const searchURL = 'https://api-task-ncpu.onrender.com/search/'
 const listContainer = document.querySelector('#list-container');
 const accessToken = localStorage.getItem('access_token');
-
-console.log(accessToken)
 
 function renderTasks() {
 // Faz uma requisição GET para a API

@@ -1,4 +1,4 @@
-const urlBase = 'http://127.0.0.1:8000/signup'
+const urlBase = 'https://api-task-ncpu.onrender.com/signup'
 const formulario = document.getElementById('register-form')
 const container = document.getElementById('container')
 
