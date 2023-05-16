@@ -59,7 +59,7 @@ if (editando){
           setTimeout(function() {
             // código que será executado após 2 segundos
             window.location.href = 'index.html';
-          }, 2000);
+          }, 1000);
           
 
 
@@ -76,10 +76,31 @@ if (editando){
     fetch( urlBase, {
       method: "POST",
       body: dados,
-      headers: {'Authorization': `Bearer ${accessToken}`}
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
     })
     .then(response => response.json())
+    .then(data => {
+      // exibir mensagem de sucesso e redirecionar para a página de lista de tarefas após 2 segundos
+      formulario.innerHTML = '';
+      formulario.innerHTML = `<p class="text-center">Atualizando tarefa!</p>
+                              <div class="d-flex justify-content-center">
+                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
+                              </div>`
+      formulario.reset();
+      setTimeout(function() {
+        // código que será executado após 2 segundos
+        window.location.href = 'index.html';
+      }, 1000)
     .catch(error => console.error(error));
-    window.location.href = 'index.html';
   }
-}
+)}}

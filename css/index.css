@@ -53,6 +53,9 @@ a {
     border-color: #fff;
     color: #fff;
 }
+#btn-sair {
+    margin-left: 10px;
+  }
 
 .btn-outline-primary:hover {
     background-color: #fff;

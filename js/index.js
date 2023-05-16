@@ -3,6 +3,8 @@ const searchURL = 'http://127.0.0.1:8000/search/'
 const listContainer = document.querySelector('#list-container');
 const accessToken = localStorage.getItem('access_token');
 
+console.log(accessToken)
+
 function renderTasks() {
 // Faz uma requisição GET para a API
 fetch(tarefasURL , {
@@ -49,8 +51,7 @@ fetch(result, {
     headers: {
         'Authorization': `Bearer ${accessToken}`
     }
-})
-
+    })
     .then(response => response.json())
     .then(data => {
     // função para listar todas tarefas filtradas
@@ -61,6 +62,7 @@ fetch(result, {
     const msg = document.createElement('p');
     msg.innerHTML = `Tarefa não existe.`;
     
+    
     // Adicionar mensagem de erro ao DOM
     const container = document.querySelector('#list-container');
     container.appendChild(msg);
@@ -68,7 +70,7 @@ fetch(result, {
     // Registrar erro no console
     console.error(error);
     });
-    
+        
     });
 
 function listTask(data){
@@ -278,7 +280,7 @@ function deletar(id){
             setTimeout(function() {
               // código que será executado após 2 segundos
               location.reload()
-            }, 2000);
+            }, 1000);
         } else {
           throw new Error('Não foi possível excluir a tarefa');
         }
@@ -287,5 +289,20 @@ function deletar(id){
         console.error(error);
       });
 }
+
+// selecione o botão "Sair" na barra de navegação
+const logoutButton = document.getElementById("btn-sair");
+
+// adicione um listener de evento de clique
+logoutButton.addEventListener("click", function(event) {
+  event.preventDefault(); // previne o comportamento padrão do botão
+
+  // remove o token do localStorage
+  localStorage.removeItem("access_token");
+
+  // redireciona para a página de login
+  window.location.href = "login.html";
+});
+
 
 renderTasks()

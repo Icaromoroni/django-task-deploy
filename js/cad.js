@@ -1,5 +1,6 @@
 const urlBase = 'http://127.0.0.1:8000/signup'
 const formulario = document.getElementById('register-form')
+const container = document.getElementById('container')
 
 formulario.addEventListener('submit',(event) => {
     event.preventDefault();
@@ -18,26 +19,27 @@ formulario.addEventListener('submit',(event) => {
         throw new Error('Ocorreu um erro ao cadastrar o usuário.');
       }
   
-      console.log('Usuário cadastrado com sucesso!');
       const loadingElement = document.createElement('div');
-      loadingElement.className = 'd-flex align-items-center justify-content-center';
-      loadingElement.style.height = '100vh';
+      loadingElement.classList.add('text-center')
       loadingElement.innerHTML = `
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
+        <p>Carregando</p>
+        <div class="d-flex justify-content-center">
+          <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+            <span class="visually-hidden"></span>
+          </div>
+          <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+            <span class="visually-hidden"></span>
+          </div>
+          <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+            <span class="visually-hidden"></span>
+          </div>
         </div>
       `;
-      document.body.innerHTML = '';
-      document.body.appendChild(loadingElement); // Exibe mensagem "Carregando..." no centro da página com três spinners do Bootstrap
+      container.innerHTML = '';
+      container.appendChild(loadingElement); // Exibe mensagem "Carregando..." no centro da página com três spinners do Bootstrap
       setTimeout(function() {
         window.location.href = 'login.html'; // Redireciona para a página de login após o temporizador de 2 segundos
-      }, 2000);
+      }, 1000);
     })
     .catch(function(error) {
       console.error(error);
